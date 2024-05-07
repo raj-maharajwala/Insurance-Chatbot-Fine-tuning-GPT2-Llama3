@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InsuranceGPT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        @keyframes rotate-y {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        .rotating-logo {
+            animation: rotate-y 8s linear infinite;
+            transform-style: preserve-3d;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-area">
+            <img src="{{ url_for('static', filename='img_logo.png') }}" alt="Data Science GPT Logo" class="rotating-logo" width="200" height="200">
+        </div>
+        <h2>InsuranceGPT</h2>
+        <h4>Where Exploration Begins</h4>
+        <div class="history">
+            {% for item in history %}
+            <p>{{ item }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="search-area">
+            <form method="POST" action="{{ url_for('index') }}">
+                <input type="text" name="query" placeholder="Enter your query" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="content-area smaller-content">
+            <h3>Question</h3>
+            <div class="content-flex">
+                <img src="{{ url_for('static', filename='sc.png') }}" alt="Descriptive Text">
+                <p>{{ query }}</p>
+            </div>
+        </div>
+        <div class="content-area larger-content">
+            <h3>Discover Insights and Answers</h3>
+            <div class="content-flex">
+                <img src="{{ url_for('static', filename='img_logo.png') }}" alt="Descriptive Text" class="rotating-logo">
+                <p>{{ response }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="video-content">
+        <div class="video-card">
+            <h4>Reference Video 1</h4>
+            <iframe src="https://www.youtube.com/embed/YOUR_FIRST_VIDEO_ID" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <h4>Reference Video 2</h4>
+            <iframe src="https://www.youtube.com/embed/YOUR_SECOND_VIDEO_ID" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    </div>
+</body>
+</html>
