@@ -1,9 +1,7 @@
 # One-stop Insurance Chatbot
 
-<video autoplay controls>
-  <source src="video/InsuranceGPT.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+**Watch the Video Demo:**  
+[![Watch the video](video/InsuranceGPT.mp4)
 
 **1. Run the UI application and ask Queries:**<br>
 Simply run the file `app.py` using below command 
