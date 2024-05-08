@@ -1,7 +1,7 @@
 # One-stop Insurance Chatbot
 
 **Watch the Chatbot Demo:**   
-![GIF](https://streamable.com/vbrus9?src=player-page-share)
+![GIF](https://github.com/raj-maharajwala/Insurance-Chatbot-Fine-tuning-GPT2-Llama2/blob/main/video/InsuranceGPT_big.gif)
 
 
 
