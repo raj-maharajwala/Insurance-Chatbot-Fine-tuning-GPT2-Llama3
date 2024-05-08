@@ -1,9 +1,7 @@
 # One-stop Insurance Chatbot
 
-**Watch the Chatbot Demo:**  
-**Watch the Chatbot Demo:**  
-**Watch the Chatbot Demo:**  
-[![Watch the video](https://drive.google.com/uc?export=download&id=1SEbk70KV-9ptOddd76QHSPkZ0jgxIoKs)](https://drive.google.com/file/d/1SEbk70KV-9ptOddd76QHSPkZ0jgxIoKs/preview)
+**Watch the Chatbot Demo:**   
+[![Watch the video](https://streamable.com/vbrus9)](https://streamable.com/vbrus9)
 
 
 
