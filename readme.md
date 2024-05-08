@@ -1,7 +1,7 @@
 # One-stop Insurance Chatbot
 
 **Watch the Video Demo:**  
-[![Watch the video](https://img.youtube.com/vi/YourVideoIDHere/0.jpg)]([video/InsuranceGPT.mp4](https://github.com/raj-maharajwala/Insurance-Chatbot-Fine-tuning-GPT2-Llama2/assets/95955903/78fb2081-4349-4e5a-b906-a011962be3da))
+[![Watch the video](https://img.youtube.com/vi/YourVideoIDHere/0.jpg)](https://github.com/raj-maharajwala/Insurance-Chatbot-Fine-tuning-GPT2-Llama2/assets/95955903/78fb2081-4349-4e5a-b906-a011962be3da)
 
 **1. Run the UI application and ask Queries:**<br>
 Simply run the file `app.py` using below command 
