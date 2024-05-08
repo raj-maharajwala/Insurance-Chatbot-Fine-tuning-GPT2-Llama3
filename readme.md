@@ -1,7 +1,8 @@
 # One-stop Insurance Chatbot
 
 **Watch the Chatbot Demo:**   
-[![Watch the video](https://streamable.com/vbrus9)](https://streamable.com/vbrus9)
+![GIF](https://streamable.com/vbrus9)
+
 
 
 
