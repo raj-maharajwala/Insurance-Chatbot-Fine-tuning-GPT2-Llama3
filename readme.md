@@ -1,6 +1,10 @@
 # One-stop Insurance Chatbot
 
 **Watch the Chatbot Demo:**  
+**Watch the Chatbot Demo:**  
+[![Watch the video](https://drive.google.com/uc?export=download&id=1SEbk70KV-9ptOddd76QHSPkZ0jgxIoKs)](https://drive.google.com/file/d/1SEbk70KV-9ptOddd76QHSPkZ0jgxIoKs/view)
+
+
 <img src="https://drive.google.com/file/d/1SEbk70KV-9ptOddd76QHSPkZ0jgxIoKs/view" alt="InsuranceGPT Demo" width="1000">
 
 **1. Run the UI application and ask Queries:**<br>
