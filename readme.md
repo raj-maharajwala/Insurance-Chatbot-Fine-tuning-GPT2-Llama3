@@ -6,7 +6,7 @@
 
 
 
-<img src="https://drive.google.com/file/d/1SEbk70KV-9ptOddd76QHSPkZ0jgxIoKs/view" alt="InsuranceGPT Demo" width="1000">
+<img src="https://github.com/raj-maharajwala/Insurance-Chatbot-Fine-tuning-GPT2-Llama2/blob/main/video/InsuranceGPT_big.gif" alt="InsuranceGPT Demo" width="1000">
 
 **1. Run the UI application and ask Queries:**<br>
 Simply run the file `app.py` using below command 
