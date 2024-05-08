@@ -1,7 +1,7 @@
 # One-stop Insurance Chatbot
 
 **Watch the Chatbot Demo:**  
-<img src="https://drive.google.com/drive/u/0/folders/1iTVCHQADieQNnJlWENPMtAuy_acRBs-t" alt="InsuranceGPT Demo" width="1000">
+<img src="https://drive.google.com/file/d/1SEbk70KV-9ptOddd76QHSPkZ0jgxIoKs/view" alt="InsuranceGPT Demo" width="1000">
 
 **1. Run the UI application and ask Queries:**<br>
 Simply run the file `app.py` using below command 
