@@ -1,7 +1,7 @@
 # One-stop Insurance Chatbot
 
 **Watch the Video Demo:**  
-[![Watch the video](video/InsuranceGPT.mp4)
+[![Watch the video](https://img.youtube.com/vi/YourVideoIDHere/0.jpg)](video/InsuranceGPT.mp4)
 
 **1. Run the UI application and ask Queries:**<br>
 Simply run the file `app.py` using below command 
