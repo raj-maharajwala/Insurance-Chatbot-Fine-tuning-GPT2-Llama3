@@ -27,7 +27,7 @@ n, Inference, Parameter Tuning Test, Testing Llama2 and Llama3 for future refere
 
 File `finetuning_Llama3_QLoRA_InsuranceQA.ipnb` contains data preparation, Llama-3 Model Training, Model evaluation, Inference, Parameter Tuning Test
 
-File `GPT2_params_testing_Llama2.ipynb` contains data preparation, Model Training, Model evaluatio
+File `GPT2_params_testing_Llama2.ipynb` contains data preparation, Model Training, Model evaluation
 <br><br>
 
 # Progress and More Information
