@@ -25,7 +25,8 @@ python3 inference_llama3.py
 File `final_GPT2_finetuning.ipynb` contains data preparation, GPT-2 Model Training on most optimal parameters, Model evaluation, and Inference
 n, Inference, Parameter Tuning Test, Testing Llama2 and Llama3 for future reference.
 
-File `finetuning_Llama3_QLoRA_InsuranceQA.ipnb` contains data preparation, Llama-3 Model Training, Model evaluation, Inference, Parameter Tuning Test
+File `finetuning_Llama3_QLoRA_InsuranceQA.ipnb` contains data preparation, Llama-3 Model Training, Model evaluation, Inference, and Parameter Tuning Test
+Updated File `QLoRA_Llama3_Finetuning_updated.ipynb` contains optimized version of finetuning 
 
 File `GPT2_params_testing_Llama2.ipynb` contains data preparation, Model Training, Model evaluation
 <br><br>
