@@ -50,7 +50,7 @@ File `GPT2_params_testing_Llama2.ipynb` contains data preparation, Model Trainin
 ## 2. Dataset: InsuranceQA (Subset)
 <br>
 
-# Python Script for inference using llama_cpp_python
+# Python Script for inference "openinsurancellm-llama3-8b.Q5_K_M.gguf" using llama_cpp_python using CPU
 ```bash
 pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
 ```
