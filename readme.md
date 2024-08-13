@@ -5,6 +5,9 @@
 
 ![GIF](https://github.com/raj-maharajwala/Insurance-Chatbot-Fine-tuning-GPT2-Llama2/blob/main/video/InsuranceGPT_big.gif)
 
+
+`Hugging Face GGUF Model`: https://huggingface.co/Raj-Maharajwala/OpenInsuranceLLM-Llama3-8B-GGUF
+
 **1. Run the UI application and ask Queries:**<br>
 
 Finetuned Llama3-8B: Run the file `app_llama3_streamlit.py` using below command 
