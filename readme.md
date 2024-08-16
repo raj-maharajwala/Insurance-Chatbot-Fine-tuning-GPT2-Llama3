@@ -7,49 +7,6 @@ Inference Model: [🤗 OpenInsuranceLLM-Llama-3-8B-GGUF Model - hugging-face](ht
 
 ![GIF](https://github.com/raj-maharajwala/Insurance-Chatbot-Fine-tuning-GPT2-Llama2/blob/main/video/InsuranceGPT_big.gif)
 
-
-**1. Run the UI application and ask Queries:**<br>
-
-Finetuned Llama3-8B: Run the file `app_llama3_streamlit.py` using below command 
-```{bash}
-streamlit run app_llama3_streamlit.py
-```
-
-Finetuned GPT2: Run the file `app_gpt2_flask.py` using below command
-```{bash} 
-python3 app_gpt2_flask.py 
-```
-<br>
-
-**2. For inference purposes on the optimal model:**<br>
-Simply run the `inference_insurance_gpt2.py` using below command:
-```{bash} 
-python3 inference_gp2.py 
-```
-
-Simply run the `inference_insurance_llama3_GGUF.py` using below command:
-```{bash} 
-python3 inference_insurance_llama3_GGUF.py 
-```
-<br>
-
-File `data_processing.ipynb` contains initial data preprocessing steps from InsuranceQA to QA format for finetuning LLM models.
-
-File `Finetuning_Llama3_LoRA_GGUF_latest.ipynb` contains Finetuning of Llama3 model using LoRA and also converting the Finetuned model to Q5_K_M, and Q4_K_M GGUF format for faster inference.
-
-Final Model `Hugging Face link`: Raj-Maharajwala/OpenInsuranceLLM-Llama3-8B-GGUF
-
-File `final_GPT2_finetuning.ipynb` contains data preparation, GPT-2 Model Training on most optimal parameters, Model evaluation, and Inference
-n, Inference, Parameter Tuning Test, Testing Llama2 and Llama3 for future reference.
-
-File `GPT2_params_testing_Llama2.ipynb` contains data preparation, Model Training, Model evaluation, and Testing Parameter
-<br><br>
-
-## 1. Finetuned on Base Model: Llama3-8B using LoRA (8-bit)
-
-## 2. Dataset: InsuranceQA (Subset)
-<br>
-
 # Python Script for inference "openinsurancellm-llama3-8b.Q5_K_M.gguf" using llama_cpp_python using CPU
 ```bash
 pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
@@ -129,6 +86,49 @@ def inference_loop(max_tokens=8025, top_k=15, n_gpu_layers=0, temperature=0.0, n
 #default params: inference_loop(max_tokens=8025, top_k=15, n_gpu_layers=0, temperature=0.0, n_ctx=8192, n_threads=32, n_batch=512):
 inference_loop(top_k=10) 
 ```
+
+
+**1. Run the UI application and ask Queries:**<br>
+
+Finetuned Llama3-8B: Run the file `app_llama3_streamlit.py` using below command 
+```{bash}
+streamlit run app_llama3_streamlit.py
+```
+
+Finetuned GPT2: Run the file `app_gpt2_flask.py` using below command
+```{bash} 
+python3 app_gpt2_flask.py 
+```
+<br>
+
+**2. For inference purposes on the optimal model:**<br>
+Simply run the `inference_insurance_gpt2.py` using below command:
+```{bash} 
+python3 inference_gp2.py 
+```
+
+Simply run the `inference_insurance_llama3_GGUF.py` using below command:
+```{bash} 
+python3 inference_insurance_llama3_GGUF.py 
+```
+<br>
+
+File `data_processing.ipynb` contains initial data preprocessing steps from InsuranceQA to QA format for finetuning LLM models.
+
+File `Finetuning_Llama3_LoRA_GGUF_latest.ipynb` contains Finetuning of Llama3 model using LoRA and also converting the Finetuned model to Q5_K_M, and Q4_K_M GGUF format for faster inference.
+
+Final Model `Hugging Face link`: Raj-Maharajwala/OpenInsuranceLLM-Llama3-8B-GGUF
+
+File `final_GPT2_finetuning.ipynb` contains data preparation, GPT-2 Model Training on most optimal parameters, Model evaluation, and Inference
+n, Inference, Parameter Tuning Test, Testing Llama2 and Llama3 for future reference.
+
+File `GPT2_params_testing_Llama2.ipynb` contains data preparation, Model Training, Model evaluation, and Testing Parameter
+<br><br>
+
+## 1. Finetuned on Base Model: Llama3-8B using LoRA (8-bit)
+
+## 2. Dataset: InsuranceQA (Subset)
+<br>
 
 # Progress and More Information
 <br>
