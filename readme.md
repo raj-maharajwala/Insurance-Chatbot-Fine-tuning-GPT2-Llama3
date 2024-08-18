@@ -6,6 +6,8 @@ Inference Model: [🤗 OpenInsuranceLLM-Llama-3-8B-GGUF Model - hugging-face](ht
 ![GIF](Missing GIF Llama3 Stramlit Application)
 
 <img width="1262" alt="image" src="https://github.com/user-attachments/assets/7fa8ec51-5fe0-4f66-8b64-a65e87e42a92">
+<img width="1280" alt="image" src="https://github.com/user-attachments/assets/cb1aa516-59bf-4fc8-abd2-af474a53d580">
+
 <br><br>
 
 ![GIF](https://github.com/raj-maharajwala/Insurance-Chatbot-Fine-tuning-GPT2-Llama2/blob/main/video/InsuranceGPT_big.gif)
