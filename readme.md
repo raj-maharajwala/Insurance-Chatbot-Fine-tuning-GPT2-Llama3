@@ -6,7 +6,7 @@ Inference Model: [🤗 OpenInsuranceLLM-Llama-3-8B-GGUF Model - hugging-face](ht
 ![GIF](Missing GIF Llama3 Stramlit Application)
 
 <img width="1262" alt="image" src="https://github.com/user-attachments/assets/7fa8ec51-5fe0-4f66-8b64-a65e87e42a92">
-
+<br><br>
 ![GIF](https://github.com/raj-maharajwala/Insurance-Chatbot-Fine-tuning-GPT2-Llama2/blob/main/video/InsuranceGPT_big.gif)
 
 # Python Script for inference "openinsurancellm-llama3-8b.Q5_K_M.gguf" using llama_cpp_python using CPU
