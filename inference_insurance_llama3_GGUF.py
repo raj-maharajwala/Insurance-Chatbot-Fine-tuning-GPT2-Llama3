@@ -5,6 +5,7 @@ from pathlib import Path
 from llama_cpp import Llama
 from textwrap import dedent
 import glob
+import multiprocessing
 from huggingface_hub import hf_hub_download
 
 def download_model():
@@ -44,7 +45,7 @@ def get_prompt(Question):
     return prompt
 
 
-def inference_loop(max_tokens=8025, top_k=15, n_gpu_layers=0, temperature=0.0, n_ctx=8192, n_threads=32, n_batch=512):
+def inference_loop(max_tokens=8025, top_k=15, n_gpu_layers=0, temperature=0.0, n_ctx=8192, n_threads=multiprocessing.cpu_count() - 1, n_batch=512):
     # Load the model
     print("Welcome to OpenInsuranceLLM Inference Loop:\n\n")
 
@@ -70,5 +71,6 @@ def inference_loop(max_tokens=8025, top_k=15, n_gpu_layers=0, temperature=0.0, n
         print(f"tokens: {ntokens}")
         print(f"Time: {execution_time:.2f} s  Per Token: {(1.0 * execution_time / ntokens):.2f} s\n\n\n")
 
-#default params: inference_loop(max_tokens=8025, top_k=15, n_gpu_layers=0, temperature=0.0, n_ctx=8192, n_threads=32, n_batch=512):
-inference_loop(top_k=10)
+# default params set by me: inference_loop(max_tokens=8025, top_k=15, n_gpu_layers=0, temperature=0.0, n_ctx=8192, n_threads=multiprocessing.cpu_count() - 2, n_batch=512)
+# multiprocessing.cpu_count() - 2 = 6
+inference_loop(top_k=10, n_threads = 64, max_tokens=500)

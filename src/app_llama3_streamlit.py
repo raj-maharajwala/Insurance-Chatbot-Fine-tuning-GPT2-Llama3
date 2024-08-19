@@ -4,13 +4,14 @@ from llama_cpp import Llama
 import textwrap
 import time
 import os
+import multiprocessing
 from pathlib import Path
 import base64
 
 @st.cache_resource
 def load_model(n_gpu_layers, n_ctx, n_threads, n_batch):
     parent_dir = os.path.dirname(os.getcwd())
-    MODEL_DIR = os.path.join(parent_dir, 'new_quantized_dir_openinsurancellm') # GGUF files
+    MODEL_DIR = os.path.join(parent_dir, 'gguf_dir') # GGUF files
     os.makedirs(MODEL_DIR, exist_ok=True)
     directory = Path(MODEL_DIR)
     model_1_path = str(list(directory.glob('openinsurancellm*Q5*.gguf'))[0])
@@ -35,9 +36,9 @@ def get_prompt(Question, context=""):
         prompt = f"system\n{System}\nuser\nInsurance Question: {Question}\nassistant\nInsurance Answer: "
     return prompt
 
-st.title(":red[OpenBioLLM Inference]:hospital:")
+st.title(":red[OpenInsuranceLLM Inference ]:heavy_dollar_sign::hospital:")
 
-with open(r"..\assets\logo.png", "rb") as image_file:
+with open("../assets/logo.png", "rb") as image_file:
     base64_image = base64.b64encode(image_file.read()).decode("utf-8")
 
 # Custom CSS for rotating logo and text styling
@@ -77,31 +78,31 @@ Sidebar_html = f"""
 """
 
 st.sidebar.markdown(Sidebar_html, unsafe_allow_html=True)
-st.sidebar.markdown("<div class='sidebar-text'>OpenBioLLM</div>", unsafe_allow_html=True)
-st.sidebar.markdown("<div class='sidebar-subtext'>Where Bio-Medical Exploration Begins</div>", unsafe_allow_html=True)
+st.sidebar.markdown("<div class='sidebar-text'>OpenInsuranceLLM</div>", unsafe_allow_html=True)
+st.sidebar.markdown("<div class='sidebar-subtext'>Where Insurance Exploration Begins</div>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
 with st.sidebar.expander("About"):
     st.markdown("""
-    This is a chatbot interface for OpenBioLLM, an AI assistant specialized in healthcare and biomedical domains. 
-    Developed by Saama AI Labs with Open Life Science AI, it provides expert answers to medical questions.
+    This is a chatbot interface for OpenInsuranceLLM, an AI assistant specialized in insurance domain. 
+    Developed by Raj Maharajwala, it provides expert answers to insurance questions and other general questions suited for Llama-3 Model.
 
     ## How to use
     1. Adjust model parameters in the sidebar if needed.
-    2. Type your medical question in the chat input.
-    3. The AI will generate a response based on its extensive medical knowledge.
+    2. Type your insurance/general question in the chat input.
+    3. The AI will generate a response based on its extensive insurance/general knowledge.
 
-    Note: This is a demo version and should not replace professional medical advice.
+    Note: This is a demo version and should not replace professional insurance advice.
     """)
 
 # Model parameters in a dropdown
 with st.sidebar.expander("Model Parameters"):
     top_k = st.slider("Top K", 1, 100, 15)
     temperature = st.slider("Temperature", 0.0, 1.0, 0.0)
-    max_tokens = st.slider("Max Tokens", 1000, 10000, 8025)
-    n_gpu_layers = st.slider("GPU Layers", 0, 100, 0)
-    n_ctx = st.slider("Context Size", 1000, 10000, 8192)
-    n_threads = st.slider("Threads", 1, 64, 32)
+    max_tokens = st.slider("Max Tokens", 200, 10000, 800)
+    n_gpu_layers = st.slider("GPU Layers", -1, 8, 0)
+    n_ctx = st.slider("Context Size", 1000, 8192, 8192)
+    n_threads = st.slider("Threads", 1, 64, multiprocessing.cpu_count() - 1)
     n_batch = st.slider("Batch Size", 1, 1024, 512)
 
 # Load the model
@@ -116,7 +117,7 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"], unsafe_allow_html=True)
 
-if question := st.chat_input("Ask anything in Insurance domain..."):
+if question := st.chat_input("Ask anything in Insurance domain (or general questions) ..."):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": question})
     with st.chat_message("user"):
@@ -133,7 +134,7 @@ if question := st.chat_input("Ask anything in Insurance domain..."):
         ntokens = 1 if ntokens == 0 else ntokens
         response_text = response['choices'][0]['text'] 
         execution_time = time.time() - start_time
-        response_text += f"<br>Time: {execution_time:.2f} s Per Token: {(1.0*execution_time/ntokens):.2f} s Tokens: {ntokens}"
+        response_text += f"<br>Time: {execution_time:.2f} s Per Token: {(1.0*execution_time/ntokens):.2f} s  Token/sec: {(1.0*ntokens/execution_time):.2f} s"
 
         full_response = ""
         for chunk in textwrap.wrap(response_text, width=60):
