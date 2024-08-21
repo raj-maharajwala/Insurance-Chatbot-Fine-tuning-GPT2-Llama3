@@ -1,6 +1,7 @@
 # One-stop Insurance Chatbot
 
 Inference Model: [🤗 OpenInsuranceLLM-Llama-3-8B-GGUF Model - hugging-face](https://huggingface.co/Raj-Maharajwala/OpenInsuranceLLM-Llama3-8B-GGUF)
+![Hugging Face](image.png)
 
 **Watch the Chatbot Demo:**   
 ![GIF](Missing GIF Llama3 Stramlit Application)
