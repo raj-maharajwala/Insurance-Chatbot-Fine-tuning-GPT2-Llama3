@@ -154,5 +154,5 @@ Finetuning played a crucial role in the project, enabling the customization of p
 
 1. I'm planning to enhance my search system by integrating Hybrid RAG, which combines Retrieval-Augmented Generation with Reciprocal Rank Fusion. This approach will allow me to leverage both keyword-based and semantic search capabilities, ensuring more accurate and contextually relevant results. By using Reciprocal Rank Fusion, I can merge results from different search methods, assigning scores based on rank positions to create a comprehensive and optimized ranked list.<br><br>
 2. I'm looking to incorporate video resources by using audio transcript similarity matching. This will involve transcribing video content and aligning it with user queries to ensure the videos are contextually relevant. By extracting timestamps from these transcripts, I can direct users to specific segments of the videos that are most pertinent to their queries. This integration will enrich the search experience by providing not only text-based resources but also precise video content that addresses user needs effectively.
-3. Using LangGraph Retrieval Agent to Query Internal Database.
+3. Using LangGraph and Ollamato build Retrieval Agent to Query Internal Database.
 ---
