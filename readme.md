@@ -6,7 +6,7 @@ Inference Model: [🤗 OpenInsuranceLLM-Llama-3-8B-GGUF Model - hugging-face](ht
 **Watch the Chatbot Demo:**   
 <img width="1280" alt="image" src="https://github.com/user-attachments/assets/cb1aa516-59bf-4fc8-abd2-af474a53d580">
 
-<br><br>
+<br>
 
 <img width="1280" alt="image" src="https://github.com/user-attachments/assets/5469b48c-ef6d-4178-95bc-6fe9d8072bb4">
 
