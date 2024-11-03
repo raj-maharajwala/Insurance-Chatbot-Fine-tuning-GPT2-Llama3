@@ -4,13 +4,11 @@ Inference Model: [🤗 OpenInsuranceLLM-Llama-3-8B-GGUF Model - hugging-face](ht
 ![Hugging Face](image.png)
 
 **Watch the Chatbot Demo:**   
-![GIF](Missing GIF Llama3 Stramlit Application)
-
 <img width="1280" alt="image" src="https://github.com/user-attachments/assets/cb1aa516-59bf-4fc8-abd2-af474a53d580">
 
 <br><br>
 
-<img width="785" alt="image" src="https://github.com/user-attachments/assets/5469b48c-ef6d-4178-95bc-6fe9d8072bb4">
+<img width="1280" alt="image" src="https://github.com/user-attachments/assets/5469b48c-ef6d-4178-95bc-6fe9d8072bb4">
 
 # Python Script for inference "openinsurancellm-llama3-8b.Q5_K_M.gguf" using llama_cpp_python using CPU
 ```bash
