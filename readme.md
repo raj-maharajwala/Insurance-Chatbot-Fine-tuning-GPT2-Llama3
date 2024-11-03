@@ -10,7 +10,7 @@ Inference Model: [🤗 OpenInsuranceLLM-Llama-3-8B-GGUF Model - hugging-face](ht
 
 <br><br>
 
-![GIF](https://github.com/raj-maharajwala/Insurance-Chatbot-Fine-tuning-GPT2-Llama2/blob/main/video/InsuranceGPT_big.gif)
+<img width="785" alt="image" src="https://github.com/user-attachments/assets/5469b48c-ef6d-4178-95bc-6fe9d8072bb4">
 
 # Python Script for inference "openinsurancellm-llama3-8b.Q5_K_M.gguf" using llama_cpp_python using CPU
 ```bash
