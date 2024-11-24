@@ -580,7 +580,7 @@ if __name__ == "__main__":
 
 ### Key Achievements
 - Optimized model fine-tuning with InsuranceQA dataset
-- Implemented 4-bit quantization with QLoRA
+- Implemented 8-bit quantization with LoRA
 - Developed user-friendly web interfaces
 - Achieved state-of-the-art perplexity scores
 - Successfully integrated PEFT methods
