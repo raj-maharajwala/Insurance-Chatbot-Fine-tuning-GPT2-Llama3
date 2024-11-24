@@ -26,20 +26,6 @@ A production-ready insurance domain chatbot. This model is a domain-specific lan
 - **Dataset:** InsuranceQA
 - **Fine-tuning Method:** LoRA (8-bit)
 - **Trainable Parameters:** 20.97M (0.26% of total params)
-- **LoRA Configuration:**
-  ```python
-  LoraConfig(
-    r=8,
-    lora_alpha=32,
-    lora_dropout=0.05,
-    bias="none",
-    task_type="CAUSAL_LM",
-    target_modules=[
-      'up_proj', 'down_proj', 'gate_proj',
-      'k_proj', 'q_proj', 'v_proj', 'o_proj'
-    ]
-  )
-  ```
   
 ## Nvidia Llama 3 - ChatQA Paper
 
@@ -67,45 +53,9 @@ export FORCE_CMAKE=1
 CMAKE_ARGS="-DGGML_METAL=on" pip install --upgrade --force-reinstall llama-cpp-python==0.3.2 --no-cache-dir
 ```
 
-### Dependencies
-Create a `requirements.txt` file with the following contents:
-```text
-black==24.10.0
-certifi==2024.8.30
-charset-normalizer==3.4.0
-click==8.1.7
-diskcache==5.6.3
-filelock==3.16.1
-fsspec==2024.10.0
-huggingface-hub==0.26.2
-idna==3.10
-iniconfig==2.0.0
-isort==5.13.2
-Jinja2==3.1.4
-llama_cpp_python==0.3.2
-markdown-it-py==3.0.0
-MarkupSafe==3.0.2
-mdurl==0.1.2
-mypy-extensions==1.0.0
-numpy==2.1.3
-packaging==24.2
-pathspec==0.12.1
-platformdirs==4.3.6
-pluggy==1.5.0
-psutil==6.1.0
-Pygments==2.18.0
-pytest==8.3.3
-PyYAML==6.0.2
-requests==2.32.3
-rich==13.9.4
-tqdm==4.67.0
-typing_extensions==4.12.2
-urllib3==2.2.3
-```
-
 Then install dependencies:
 ```bash
-pip install -r requirements.txt
+pip install -r inference_requirements.txt
 ```
 
 ## Usage Guide
@@ -502,13 +452,28 @@ if __name__ == "__main__":
 1. **Model Perplexity:**
    - GPT-2: 3.5
    - Llama-3: 1.42
+     
+2. **LoRA Configuration:**
+  ```python
+  LoraConfig(
+    r=8,
+    lora_alpha=32,
+    lora_dropout=0.05,
+    bias="none",
+    task_type="CAUSAL_LM",
+    target_modules=[
+      'up_proj', 'down_proj', 'gate_proj',
+      'k_proj', 'q_proj', 'v_proj', 'o_proj'
+    ]
+  )
+  ```
 
-2. **Optimizations:**
-   - 4-bit quantization using QLoRA
+3. **Optimizations:**
+   - 8-bit quantization using LoRA
    - PagedAdamW8bit optimizer
    - ReduceLROnPlateau scheduler
    - Weight decay optimization
-   - GGUF format conversion for efficient CPU inference
+   - GGUF format conversion for faster inference
 
 ## Capabilities and Use Cases
 
@@ -544,7 +509,7 @@ if __name__ == "__main__":
 ### System Integration
 1. **Web Interface:**
    - Streamlit dashboard
-   - Flask API backend
+   - Flask dashboard
    - Real-time inference capabilities
 
 2. **Performance Optimization:**
