@@ -1,6 +1,6 @@
 # One-stop Insurance Chatbot
 
-A production-ready insurance domain chatbot leveraging state-of-the-art Llama 3 architecture, designed to provide clear and accessible information about insurance policies through an intuitive interface.
+A production-ready insurance domain chatbot. This model is a domain-specific language model based on Nvidia Llama 3 ChatQA, fine-tuned for insurance-related queries and conversations. It leverages the architecture of Llama 3 and is specifically trained to handle insurance domain tasks.
 
 ## Hugging Face Model Links
 
