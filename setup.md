@@ -36,7 +36,7 @@ quantized: "Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B-GGUF"
 
 # Open-Insurance-LLM-Llama3-8B-GGUF
 
-This model is a GGUF-quantized version of an insurance domain-specific language model based on Llama 3-ChatQA
+This model is a GGUF-quantized version of an insurance domain-specific language model based on Nvidia Llama 3-ChatQA
 Fine-tuned for insurance-related queries and conversations. 
 
 
@@ -80,49 +80,16 @@ CMAKE_ARGS="-DGGML_METAL=on" pip install --upgrade --force-reinstall llama-cpp-p
 ```
 
 ### Dependencies
-Create a `requirements.txt` file with the following contents:
-```text
-black==24.10.0
-certifi==2024.8.30
-charset-normalizer==3.4.0
-click==8.1.7
-diskcache==5.6.3
-filelock==3.16.1
-fsspec==2024.10.0
-huggingface-hub==0.26.2
-idna==3.10
-iniconfig==2.0.0
-isort==5.13.2
-Jinja2==3.1.4
-llama_cpp_python==0.3.2
-markdown-it-py==3.0.0
-MarkupSafe==3.0.2
-mdurl==0.1.2
-mypy-extensions==1.0.0
-numpy==2.1.3
-packaging==24.2
-pathspec==0.12.1
-platformdirs==4.3.6
-pluggy==1.5.0
-psutil==6.1.0
-Pygments==2.18.0
-pytest==8.3.3
-PyYAML==6.0.2
-requests==2.32.3
-rich==13.9.4
-tqdm==4.67.0
-typing_extensions==4.12.2
-urllib3==2.2.3
-```
 
-Then install dependencies:
+Then install dependencies (inference_requirements.txt) attached under `Files and Versions`:
 ```bash
-pip install -r requirements.txt
+pip install -r inference_requirements.txt
 ```
 
 ## Inference Loop
 
 ```python
+# Attached under `Files and Versions` (inference_open-insurance-llm-gguf.py)
 import os
 import time
 import logging
@@ -148,15 +115,16 @@ install(show_locals=True)
 @dataclass
 class ModelConfig:
     model_name: str = "Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B-GGUF"
-    model_file: str = "open-insurance-llm-q8_0.gguf"
-    # model_file: str = "open-insurance-llm-q4_k_m.gguf"
+    model_file: str = "open-insurance-llm-q4_k_m.gguf"
+    # model_file: str = "open-insurance-llm-q8_0.gguf"
+    # model_file: str = "open-insurance-llm-q5_k_m.gguf"
     max_tokens: int = 1000
     top_k: int = 15
-    top_p: float = 0.2
+    top_p: float = 0.2 
     repeat_penalty: float = 1.2
     num_beams: int = 4
-    n_gpu_layers: int = -2 # -1 for complete GPU usage
-    temperature: float = 0.1
+    n_gpu_layers: int = -2 #-2 # -1 for complete GPU usage
+    temperature: float = 0.1 # Coherent(0.1) vs Creativity(0.8)
     n_ctx: int = 2048 # 2048 - 8192 -> As per Llama 3 Full Capacity
     n_batch: int = 256
     verbose: bool = False
@@ -165,12 +133,12 @@ class ModelConfig:
     offload_kqv: bool =True
 
 class CustomFormatter(logging.Formatter):
-    """Enhanced formatter with detailed context for different log levels"""  
+    """Enhanced formatter with detailed context for different log levels"""
     FORMATS = {
         logging.DEBUG: "🔍 %(asctime)s - %(name)s - [%(filename)s:%(lineno)d] - %(levelname)s - %(message)s",
         logging.INFO: "ℹ️ %(asctime)s - %(name)s - [%(funcName)s] - %(levelname)s - %(message)s",
         logging.WARNING: "⚠️ %(asctime)s - %(name)s - [%(funcName)s] - %(levelname)s - %(message)s\nContext: %(pathname)s",
-        logging.ERROR: "❌ %(asctime)s - %(name)s - [%(funcName)s:%(lineno)d] - %(levelname)s - %(message)s\nTraceback: %(exc_info)s",
+        logging.ERROR: "❌ %(asctime)s - %(name)s - [%(funcName)s:%(lineno)d] - %(levelname)s - %(message)s",
         logging.CRITICAL: """🚨 %(asctime)s - %(name)s - %(levelname)s
 Location: %(pathname)s:%(lineno)d
 Function: %(funcName)s
@@ -178,7 +146,6 @@ Process: %(process)d
 Thread: %(thread)d
 Message: %(message)s
 Memory: %(memory).2fMB
-%(exc_info)s
 """
     }
 
@@ -186,18 +153,14 @@ Memory: %(memory).2fMB
         # Add memory usage information
         if not hasattr(record, 'memory'):
             record.memory = psutil.Process().memory_info().rss / (1024 * 1024)
-        
-        # Add exception info for ERROR and CRITICAL
-        if record.levelno >= logging.ERROR and not record.exc_info:
-            record.exc_info = traceback.format_exc()
-            
+
         log_fmt = self.FORMATS.get(record.levelno)
         formatter = logging.Formatter(log_fmt, datefmt='%Y-%m-%d %H:%M:%S')
-        
-        # Add performance metrics
+
+        # Add performance metrics if available
         if hasattr(record, 'duration'):
             record.message = f"{record.message}\nDuration: {record.duration:.2f}s"
-            
+
         return formatter.format(record)
 
 def setup_logging(log_dir: str = "logs") -> logging.Logger:
@@ -206,36 +169,35 @@ def setup_logging(log_dir: str = "logs") -> logging.Logger:
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     log_path = (Path(log_dir) / f"l_{timestamp}")
     log_path.mkdir(exist_ok=True)
-    # Create separate log files for different levels
+
+    # Create logger
+    logger = logging.getLogger("InsuranceLLM")
+    # Clear any existing handlers
+    logger.handlers.clear()
+    logger.setLevel(logging.DEBUG)
+
+    # Create handlers with level-specific files
     handlers = {
-        'debug': logging.FileHandler(log_path / f"debug_{timestamp}.log"),
-        'info': logging.FileHandler(log_path / f"info_{timestamp}.log"),
-        'error': logging.FileHandler(log_path / f"error_{timestamp}.log"),
-        'critical': logging.FileHandler(log_path / f"critical_{timestamp}.log"),
-        'console': RichHandler(
+        'debug': (logging.FileHandler(log_path / f"debug_{timestamp}.log"), logging.DEBUG),
+        'info': (logging.FileHandler(log_path / f"info_{timestamp}.log"), logging.INFO),
+        'error': (logging.FileHandler(log_path / f"error_{timestamp}.log"), logging.ERROR),
+        'critical': (logging.FileHandler(log_path / f"critical_{timestamp}.log"), logging.CRITICAL),
+        'console': (RichHandler(
             console=Console(theme=custom_theme),
             show_time=True,
             show_path=False,
             enable_link_path=True
-        )
-    }    
-    # Set levels for handlers
-    handlers['debug'].setLevel(logging.DEBUG)
-    handlers['info'].setLevel(logging.INFO)
-    handlers['error'].setLevel(logging.ERROR)
-    handlers['critical'].setLevel(logging.CRITICAL)
-    handlers['console'].setLevel(logging.INFO)
-    # Apply formatter to all handlers
+        ), logging.INFO)
+    }
+
+    # Configure handlers
     formatter = CustomFormatter()
-    for handler in handlers.values():
+    for (handler, level) in handlers.values():
+        handler.setLevel(level)
         handler.setFormatter(formatter)
-    # Configure root logger
-    logger = logging.getLogger("InsuranceLLM")
-    logger.setLevel(logging.DEBUG)
-    # Add all handlers
-    for handler in handlers.values():
         logger.addHandler(handler)
-    # Log startup information
+
+    # Log startup information (will now appear only once)
     logger.info(f"Starting new session {timestamp}")
     logger.info(f"Log directory: {log_dir}")
     return logger
@@ -250,23 +212,24 @@ class PerformanceMetrics:
         self.start_time = time.time()
         self.tokens = 0
         self.response_times = []
-        
-    def update(self, tokens: int, response_time: float = None):
+        self.last_reset = self.start_time
+
+    def reset_timer(self):
+        """Reset the timer for individual response measurements"""
+        self.last_reset = time.time()
+
+    def update(self, tokens: int):
         self.tokens += tokens
-        if response_time:
-            self.response_times.append(response_time)
-    
+        response_time = time.time() - self.last_reset
+        self.response_times.append(response_time)
+
     @property
     def elapsed_time(self) -> float:
         return time.time() - self.start_time
-    
+
     @property
-    def tokens_per_second(self) -> float:
-        return self.tokens / self.elapsed_time if self.elapsed_time > 0 else 0
-    
-    @property
-    def average_response_time(self) -> float:
-        return sum(self.response_times) / len(self.response_times) if self.response_times else 0
+    def last_response_time(self) -> float:
+        return self.response_times[-1] if self.response_times else 0
 
 class InsuranceLLM:
     def __init__(self, config: ModelConfig):
@@ -274,7 +237,7 @@ class InsuranceLLM:
         self.llm_ctx: Optional[Llama] = None
         self.metrics = PerformanceMetrics()
         self.logger = setup_logging()
-        
+
         nvidia_llama3_chatqa_system = (
             "This is a chat between a user and an artificial intelligence assistant. "
             "The assistant gives helpful, detailed, and polite answers to the user's questions based on the context. "
@@ -317,12 +280,12 @@ class InsuranceLLM:
             # self.check_metal_support()
             quantized_path = os.path.join(os.getcwd(), "gguf_dir")
             directory = Path(quantized_path)
-            
+
             try:
                 model_path = str(list(directory.glob(self.config.model_file))[0])
             except IndexError:
                 model_path = self.download_model()
-            
+
             with console.status("[bold green]Loading model..."):
                 self.llm_ctx = Llama(
                     model_path=model_path,
@@ -332,11 +295,11 @@ class InsuranceLLM:
                     num_beams=self.config.num_beams,
                     verbose=self.config.verbose,
                     use_mlock=self.config.use_mlock,
-                    use_mmap=self.config.verbose,
-                    offload_kqv=self.config.verbose
+                    use_mmap=self.config.use_mmap,
+                    offload_kqv=self.config.offload_kqv
                 )
             self.logger.info("Model loaded successfully")
-            
+
         except Exception as e:
             self.logger.error(f"Error loading model: {str(e)}")
             raise
@@ -354,14 +317,20 @@ class InsuranceLLM:
             "Assistant:"
         )
 
+
     def generate_response(self, prompt: str) -> Dict[str, Any]:
         if not self.llm_ctx:
             raise RuntimeError("Model not loaded. Call load_model() first.")
-        
         try:
             response = {"text": "", "tokens": 0}
-            console.print("[bold cyan]Assistant:[/bold cyan]", end=" ")
-            
+
+            # Print the initial prompt
+            # print("Assistant: ", end="", flush=True)
+            console.print("\n[bold cyan]Assistant: [/bold cyan]", end="")
+
+            # Initialize complete response
+            complete_response = ""
+
             for chunk in self.llm_ctx.create_completion(
                 prompt,
                 max_tokens=self.config.max_tokens,
@@ -374,32 +343,22 @@ class InsuranceLLM:
                 text_chunk = chunk["choices"][0]["text"]
                 response["text"] += text_chunk
                 response["tokens"] += 1
-                console.print(text_chunk, end="", markup=False)
-            
-            console.print()
+
+                # Append to complete response
+                complete_response += text_chunk
+
+                # Use simple print for streaming output
+                print(text_chunk, end="", flush=True)
+
+            # Print final newline
+            print()
+
             return response
-            
+
         except RuntimeError as e:
             if "llama_decode returned -3" in str(e):
                 self.logger.error("Memory allocation failed. Try reducing context window or batch size")
             raise
-
-    def print_metrics(self, response_tokens: int, memory_used: float):
-        try:
-            console.print("\n[dim]Performance Metrics:[/dim]")
-            console.print(f"[dim]Memory usage: {memory_used:.2f} MB[/dim]")
-            console.print(f"[dim]Tokens generated: {response_tokens}[/dim]")
-            console.print(f"[dim]Average tokens/sec: {self.metrics.tokens_per_second:.2f}[/dim]")
-            console.print(f"[dim]Total tokens: {self.metrics.tokens}[/dim]")
-            console.print(f"[dim]Total time: {self.metrics.elapsed_time:.2f}s[/dim]\n")
-        except Exception as e:
-            self.logger.error(f"Error printing metrics: {str(e)}")
-            print(f"\nPerformance Metrics:")
-            print(f"Memory usage: {memory_used:.2f} MB")
-            print(f"Tokens generated: {response_tokens}")
-            print(f"Average tokens/sec: {self.metrics.tokens_per_second:.2f}")
-            print(f"Total tokens: {self.metrics.tokens}")
-            print(f"Total time: {self.metrics.elapsed_time:.2f}s\n")
 
     def run_inference_loop(self):
         try:
@@ -407,40 +366,48 @@ class InsuranceLLM:
             console.print("\n[bold green]Welcome to Open-Insurance-LLM![/bold green]")
             console.print("Enter your questions (type '/bye', 'exit', or 'quit' to end the session)\n")
             console.print("Optional: You can provide context by typing 'context:' followed by your context, then 'question:' followed by your question\n")
-            
+            memory_used = psutil.Process().memory_info().rss / 1024 / 1024
+            console.print(f"[dim]Memory usage: {memory_used:.2f} MB[/dim]")
             while True:
                 try:
                     user_input = console.input("[bold cyan]User:[/bold cyan] ").strip()
-                    
-                    exit_commands = ["exit", "/bye", "quit"]
-                    if user_input.lower() in exit_commands:
+
+                    if user_input.lower() in ["exit", "/bye", "quit"]:
+                        console.print(f"[dim]Total tokens uptill now: {self.metrics.tokens}[/dim]")
+                        console.print(f"[dim]Total Session Time: {self.metrics.elapsed_time:.2}[/dim]")
                         console.print("\n[bold green]Thank you for using OpenInsuranceLLM![/bold green]")
                         break
-                    
                     context = ""
                     question = user_input
                     if "context:" in user_input.lower() and "question:" in user_input.lower():
                         parts = user_input.split("question:", 1)
                         context = parts[0].replace("context:", "").strip()
                         question = parts[1].strip()
-                    
+
                     prompt = self.get_prompt(question, context)
-                    
-                    with self.timer("Response generation"):
-                        response = self.generate_response(prompt)
-                    
+
+                    # Reset timer before generation
+                    self.metrics.reset_timer()
+
+                    # Generate response
+                    response = self.generate_response(prompt)
+
+                    # Update metrics after generation
                     self.metrics.update(response["tokens"])
-                    memory_used = psutil.Process().memory_info().rss / 1024 / 1024
-                    self.print_metrics(response["tokens"], memory_used)
                     
+                    # Print metrics
+                    console.print(f"[dim]Average tokens/sec: {response['tokens']/(self.metrics.last_response_time if self.metrics.last_response_time!=0 else 1):.2f} ||[/dim]",
+                                   f"[dim]Tokens generated: {response['tokens']} ||[/dim]", 
+                                   f"[dim]Response time: {self.metrics.last_response_time:.2f}s[/dim]", end="\n\n\n")
+
                 except KeyboardInterrupt:
                     console.print("\n[yellow]Input interrupted. Type '/bye', 'exit', or 'quit' to quit.[/yellow]")
                     continue
                 except Exception as e:
                     self.logger.error(f"Error processing input: {str(e)}")
-                    console.print(f"\n[red]Error processing input: {str(e)}[/red]")
+                    console.print(f"\n[red]Error: {str(e)}[/red]")
                     continue
-                    
+
         except Exception as e:
             self.logger.error(f"Fatal error in inference loop: {str(e)}")
             console.print(f"\n[red]Fatal error: {str(e)}[/red]")
@@ -449,6 +416,8 @@ class InsuranceLLM:
                 del self.llm_ctx
 
 def main():
+    if hasattr(multiprocessing, "set_start_method"):
+        multiprocessing.set_start_method("spawn", force=True)
     try:
         config = ModelConfig()
         llm = InsuranceLLM(config)
@@ -456,11 +425,16 @@ def main():
     except KeyboardInterrupt:
         console.print("\n[yellow]Program interrupted by user[/yellow]")
     except Exception as e:
-        logging.error(f"Application error: {str(e)}")
-        console.print(f"\n[red]Fatal error: {str(e)}[/red]")
+        error_msg = f"Application error: {str(e)}"
+        logging.error(error_msg)
+        console.print(f"\n[red]{error_msg}[/red]")
 
 if __name__ == "__main__":
     main()
+```
+
+```bash
+python3 inference_open-insurance-llm-gguf.py
 ```
 
 ### Nvidia Llama 3 - ChatQA Paper:
