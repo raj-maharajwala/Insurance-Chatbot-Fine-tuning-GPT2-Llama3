@@ -4,8 +4,8 @@ A production-ready insurance domain chatbot. This model is a domain-specific lan
 
 ## Hugging Face Model Links
 
-🤗 [OpenInsuranceLLM-Llama-3-8B Model](https://huggingface.co/Raj-Maharajwala/OpenInsuranceLLM-Llama3-8B)<br>
-🤗 [OpenInsuranceLLM-Llama-3-8B-GGUF-GGUF Quantized Model](https://huggingface.co/Raj-Maharajwala/OpenInsuranceLLM-Llama3-8B-GGUF)
+🤗 [Open-Insurance-LLM-Llama-3-8B Model](https://huggingface.co/Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B)<br>
+🤗 [Open-Insurance-LLM-Llama-3-8B-GGUF-GGUF Quantized Model](https://huggingface.co/Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B-GGUF)
 
 ![Chatbot Demo 1](https://github.com/user-attachments/assets/cb1aa516-59bf-4fc8-abd2-af474a53d580)
 
