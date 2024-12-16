@@ -26,7 +26,11 @@ A production-ready insurance domain chatbot. This model is a domain-specific lan
 - **Dataset:** InsuranceQA
 - **Fine-tuning Method:** LoRA (8-bit)
 - **Trainable Parameters:** 20.97M (0.26% of total params)
-  
+
+## Google Colab Llama 3 Finetuning Link
+
+👨‍💻 [Google Colab: Finetuning Llama 3 on InsuranceQA + Future Work](https://colab.research.google.com/drive/147amnUQ4nGpfAuL7tJ8qSq6MplDXQcEm?usp=sharing)
+
 ## Nvidia Llama 3 - ChatQA Paper
 
 Arxiv : [https://arxiv.org/pdf/2401.10225](https://arxiv.org/pdf/2401.10225)
