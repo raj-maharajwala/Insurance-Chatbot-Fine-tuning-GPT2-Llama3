@@ -5,7 +5,7 @@ A production-ready insurance domain chatbot. This model is a domain-specific lan
 ## Hugging Face Model Links
 
 🤗 [Open-Insurance-LLM-Llama-3-8B Model](https://huggingface.co/Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B)<br>
-🤗 [Open-Insurance-LLM-Llama-3-8B-GGUF-GGUF Quantized Model](https://huggingface.co/Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B-GGUF)
+🤗 [Open-Insurance-LLM-Llama-3-8B-GGUF Quantized Model](https://huggingface.co/Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B-GGUF)
 
 ![Chatbot Demo 1](https://github.com/user-attachments/assets/cb1aa516-59bf-4fc8-abd2-af474a53d580)
 
@@ -88,6 +88,7 @@ python3 model_inference_loop_quantized.py
 ```
 
 ```python
+# model_inference_loop_quantized.py
 import os
 import time
 import logging
@@ -112,23 +113,25 @@ install(show_locals=True)
 
 @dataclass
 class ModelConfig:
+    # Optimized parameters for coherent responses and efficient performance on devices like MacBook Air M2
     model_name: str = "Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B-GGUF"
     model_file: str = "open-insurance-llm-q4_k_m.gguf"
-    # model_file: str = "open-insurance-llm-q8_0.gguf"
-    # model_file: str = "open-insurance-llm-q5_k_m.gguf"
-    max_tokens: int = 1000
-    top_k: int = 15
-    top_p: float = 0.2 
-    repeat_penalty: float = 1.2
-    num_beams: int = 4
-    n_gpu_layers: int = -2 #-2 # -1 for complete GPU usage
-    temperature: float = 0.1 # Coherent(0.1) vs Creativity(0.8)
-    n_ctx: int = 2048 # 2048 - 8192 -> As per Llama 3 Full Capacity
-    n_batch: int = 256
-    verbose: bool = False
-    use_mmap: bool = False
-    use_mlock: bool = True
-    offload_kqv: bool =True
+    # model_file: str = "open-insurance-llm-q8_0.gguf"  # 8-bit quantization; higher precision, better quality, increased resource usage
+    # model_file: str = "open-insurance-llm-q5_k_m.gguf"  # 5-bit quantization; balance between performance and resource efficiency
+    max_tokens: int = 1000  # Maximum number of tokens to generate in a single output
+    temperature: float = 0.1  # Controls randomness in output; lower values produce more coherent responses (performs scaling distribution)
+    top_k: int = 15  # After temperature scaling, Consider the top 15 most probable tokens during sampling
+    top_p: float = 0.2  # After reducing the set to 15 tokens, Uses nucleus sampling to select tokens with a cumulative probability of 20%
+    repeat_penalty: float = 1.2  # Penalize repeated tokens to reduce redundancy
+    num_beams: int = 4  # Number of beams for beam search; higher values improve quality at the cost of speed
+    n_gpu_layers: int = -2  # Number of layers to offload to GPU; -1 for full GPU utilization, -2 for automatic configuration
+    n_ctx: int = 2048  # Context window size; Llama 3 models support up to 8192 tokens context length
+    n_batch: int = 256  # Number of tokens to process simultaneously; adjust based on available hardware (suggested 512)
+    verbose: bool = False  # True for enabling verbose logging for debugging purposes
+    use_mmap: bool = False  # Memory-map model to reduce RAM usage; set to True if running on limited memory systems
+    use_mlock: bool = True  # Lock model into RAM to prevent swapping; improves performance on systems with sufficient RAM
+    offload_kqv: bool = True  # Offload key, query, value matrices to GPU to accelerate inference
+
 
 class CustomFormatter(logging.Formatter):
     """Enhanced formatter with detailed context for different log levels"""
@@ -151,10 +154,8 @@ Memory: %(memory).2fMB
         # Add memory usage information
         if not hasattr(record, 'memory'):
             record.memory = psutil.Process().memory_info().rss / (1024 * 1024)
-
         log_fmt = self.FORMATS.get(record.levelno)
         formatter = logging.Formatter(log_fmt, datefmt='%Y-%m-%d %H:%M:%S')
-
         # Add performance metrics if available
         if hasattr(record, 'duration'):
             record.message = f"{record.message}\nDuration: {record.duration:.2f}s"
@@ -167,13 +168,10 @@ def setup_logging(log_dir: str = "logs") -> logging.Logger:
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     log_path = (Path(log_dir) / f"l_{timestamp}")
     log_path.mkdir(exist_ok=True)
-
-    # Create logger
     logger = logging.getLogger("InsuranceLLM")
     # Clear any existing handlers
     logger.handlers.clear()
     logger.setLevel(logging.DEBUG)
-
     # Create handlers with level-specific files
     handlers = {
         'debug': (logging.FileHandler(log_path / f"debug_{timestamp}.log"), logging.DEBUG),
@@ -187,19 +185,14 @@ def setup_logging(log_dir: str = "logs") -> logging.Logger:
             enable_link_path=True
         ), logging.INFO)
     }
-
-    # Configure handlers
     formatter = CustomFormatter()
     for (handler, level) in handlers.values():
         handler.setLevel(level)
         handler.setFormatter(formatter)
         logger.addHandler(handler)
-
-    # Log startup information (will now appear only once)
     logger.info(f"Starting new session {timestamp}")
     logger.info(f"Log directory: {log_dir}")
     return logger
-
 
 # Custom theme configuration
 custom_theme = Theme({"info": "bold cyan","warning": "bold yellow", "error": "bold red","critical": "bold white on red","success": "bold green","timestamp": "bold magenta","metrics": "bold blue","memory": "bold yellow","performance": "bold cyan",})
@@ -212,20 +205,16 @@ class PerformanceMetrics:
         self.tokens = 0
         self.response_times = []
         self.last_reset = self.start_time
-
     def reset_timer(self):
         """Reset the timer for individual response measurements"""
         self.last_reset = time.time()
-
     def update(self, tokens: int):
         self.tokens += tokens
         response_time = time.time() - self.last_reset
         self.response_times.append(response_time)
-
     @property
     def elapsed_time(self) -> float:
         return time.time() - self.start_time
-
     @property
     def last_response_time(self) -> float:
         return self.response_times[-1] if self.response_times else 0
@@ -316,11 +305,9 @@ class InsuranceLLM:
             "Assistant:"
         )
 
-
     def generate_response(self, prompt: str) -> Dict[str, Any]:
         if not self.llm_ctx:
             raise RuntimeError("Model not loaded. Call load_model() first.")
-
         try:
             response = {"text": "", "tokens": 0}
 
@@ -343,18 +330,10 @@ class InsuranceLLM:
                 text_chunk = chunk["choices"][0]["text"]
                 response["text"] += text_chunk
                 response["tokens"] += 1
-
-                # Append to complete response
                 complete_response += text_chunk
-
-                # Use simple print for streaming output
                 print(text_chunk, end="", flush=True)
-
-            # Print final newline
             print()
-
             return response
-
         except RuntimeError as e:
             if "llama_decode returned -3" in str(e):
                 self.logger.error("Memory allocation failed. Try reducing context window or batch size")
@@ -377,7 +356,6 @@ class InsuranceLLM:
                         console.print(f"[dim]Total Session Time: {self.metrics.elapsed_time:.2}[/dim]")
                         console.print("\n[bold green]Thank you for using OpenInsuranceLLM![/bold green]")
                         break
-
                     context = ""
                     question = user_input
                     if "context:" in user_input.lower() and "question:" in user_input.lower():
@@ -386,22 +364,14 @@ class InsuranceLLM:
                         question = parts[1].strip()
 
                     prompt = self.get_prompt(question, context)
-
-                    # Reset timer before generation
                     self.metrics.reset_timer()
-
-                    # Generate response
                     response = self.generate_response(prompt)
-
                     # Update metrics after generation
                     self.metrics.update(response["tokens"])
-                    
-
                     # Print metrics
                     console.print(f"[dim]Average tokens/sec: {response['tokens']/(self.metrics.last_response_time if self.metrics.last_response_time!=0 else 1):.2f} ||[/dim]",
                                    f"[dim]Tokens generated: {response['tokens']} ||[/dim]", 
                                    f"[dim]Response time: {self.metrics.last_response_time:.2f}s[/dim]", end="\n\n\n")
-
                 except KeyboardInterrupt:
                     console.print("\n[yellow]Input interrupted. Type '/bye', 'exit', or 'quit' to quit.[/yellow]")
                     continue
@@ -409,7 +379,6 @@ class InsuranceLLM:
                     self.logger.error(f"Error processing input: {str(e)}")
                     console.print(f"\n[red]Error: {str(e)}[/red]")
                     continue
-
         except Exception as e:
             self.logger.error(f"Fatal error in inference loop: {str(e)}")
             console.print(f"\n[red]Fatal error: {str(e)}[/red]")
@@ -583,6 +552,7 @@ if __name__ == "__main__":
   title = {Open-Insurance-LLM-Llama3-8B},
   year = {2024},
   publisher = {HuggingFace},
+  linkedin = {https://www.linkedin.com/in/raj6800/},
   url = {https://huggingface.co/Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B}
 }
 ```
