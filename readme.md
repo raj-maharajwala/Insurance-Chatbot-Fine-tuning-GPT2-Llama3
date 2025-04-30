@@ -23,7 +23,7 @@ A production-ready insurance domain chatbot. This model is a domain-specific lan
 - **License:** llama3
 
 ### Training Configuration
-- **Dataset:** InsuranceQA
+- **Dataset:** [InsuranceQA](https://github.com/shuzi/insuranceQA)
 - **Fine-tuning Method:** LoRA (8-bit)
 - **Trainable Parameters:** 20.97M (0.26% of total params)
 
