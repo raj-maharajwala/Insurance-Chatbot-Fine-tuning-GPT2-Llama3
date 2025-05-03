@@ -1,5 +1,37 @@
-transformers==4.38.2
-transformers[torch]==4.38.2
-wandb
-PyPDF2
-python-docx
+# Ensure vs_BuildTools.exe is intalled with CMake checked and System Path setup
+langchain_community
+tf-keras
+# langchain_huggingface
+# langchain_experimental
+langchain_ollama
+faiss-cpu
+torch
+# tensorflow
+# accelerate
+# peft
+# bitsandbytes
+# setuptools
+# wheel
+# cmake
+transformers
+sentence_transformers
+# pyprojroot
+# huggingface_hub
+# llama-cpp-python==0.2.90
+# llama-cpp-python
+# llamacpp
+pandas
+numpy
+tabulate
+pymysql
+# langchain_groq
+langchain
+# langchain_openai
+plotly
+nbformat
+seaborn
+streamlit
+# streamlit_authenticator
+# langgraph
+IPython
+openpyxl

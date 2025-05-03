@@ -1,0 +1,14 @@
+[theme]
+base="custom"
+backgroundColor="#212121"
+secondaryBackgroundColor="#ffffff"
+textColor="#e0e0e0"
+
+[server]
+runOnSave = true
+scriptHealthCheckEnabled = false
+maxMessageSize = 1300
+maxUploadSize = 1300
+
+
+

@@ -1,0 +1,11 @@
+ℹ️ 2025-04-30 18:45:25 - InsuranceLLM - [setup_logging] - INFO - Starting new session 20250430_184525
+ℹ️ 2025-04-30 18:45:25 - InsuranceLLM - [setup_logging] - INFO - Log directory: logs
+❌ 2025-04-30 18:45:26 - InsuranceLLM - [download_model:184] - ERROR - Error downloading model: 401 Client Error: Unauthorized for url: https://huggingface.co/Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B-GGUF/resolve/main/open-insurance-llm-q4_k_m.gguf (Request ID: Root=1-6812d236-3aaa79b01a9d910b0b100aaa;352b3411-1c11-4b33-bf76-a4d9bb93904e)
+
+Invalid credentials in Authorization header
+❌ 2025-04-30 18:45:26 - InsuranceLLM - [load_model:213] - ERROR - Error loading model: 401 Client Error: Unauthorized for url: https://huggingface.co/Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B-GGUF/resolve/main/open-insurance-llm-q4_k_m.gguf (Request ID: Root=1-6812d236-3aaa79b01a9d910b0b100aaa;352b3411-1c11-4b33-bf76-a4d9bb93904e)
+
+Invalid credentials in Authorization header
+❌ 2025-04-30 18:45:26 - InsuranceLLM - [run_inference_loop:324] - ERROR - Fatal error in inference loop: 401 Client Error: Unauthorized for url: https://huggingface.co/Raj-Maharajwala/Open-Insurance-LLM-Llama3-8B-GGUF/resolve/main/open-insurance-llm-q4_k_m.gguf (Request ID: Root=1-6812d236-3aaa79b01a9d910b0b100aaa;352b3411-1c11-4b33-bf76-a4d9bb93904e)
+
+Invalid credentials in Authorization header
