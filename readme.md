@@ -10,8 +10,6 @@ A production-ready insurance domain chatbot. This model is a domain-specific lan
 
 ![Chatbot Demo 1](ai_agent_chatbot.png)
 
-![Chatbot Demo 2](https://github.com/user-attachments/assets/cb1aa516-59bf-4fc8-abd2-af474a53d580)
-
 ## Architecture Overview
 
 ### Base Model Information
