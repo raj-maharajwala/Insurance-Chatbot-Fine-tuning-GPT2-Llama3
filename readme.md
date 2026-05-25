@@ -9,6 +9,7 @@ A production-ready insurance domain chatbot. This model is a domain-specific lan
 
 
 ![Chatbot Demo 1](ai_agent_chatbot.png)
+> WIP: I have only completed fine-tuning and standard inference so far; I still need to integrate LangGraph to build a sequential, parallel, and conditional agent architecture.
 
 ## Architecture Overview
 
